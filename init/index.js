@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV != 'production'){
+    require('dotenv').config({ path: '../.env' });
+}
+
 const mongoose = require("mongoose");
 const initData = require("./data.js");
 const Listing = require("../models/listing.js");
@@ -5,7 +9,7 @@ const axios = require("axios");
 const NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
 
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const dburl = process.env.ATLASDB_URL;
 
 main()
   .then(() => {
@@ -16,7 +20,8 @@ main()
   });
 
 async function main() {
-  await mongoose.connect(MONGO_URL);
+  await mongoose.connect(dburl);
+  await initDB();
 }
 
 const initDB = async () => {
@@ -46,7 +51,7 @@ const initDB = async () => {
 
       const newObj = {
         ...obj,
-        owner: new mongoose.Types.ObjectId("69bc70ac6db0355477c5bda6"),
+        owner: new mongoose.Types.ObjectId("69c1bb4ad36e868486bb70b2"),
         geometry: {
           type: "Point",
           coordinates: [parseFloat(geo.lon), parseFloat(geo.lat)], 
@@ -64,5 +69,3 @@ const initDB = async () => {
 
   console.log("data initialized with map coordinates");
 };
-
-initDB();

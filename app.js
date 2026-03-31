@@ -20,6 +20,7 @@ const review = require('./models/review.js');
 
 
 const dburl = process.env.ATLASDB_URL;
+console.log(process.env.ATLASDB_URL);
 main()
 .then(() => console.log('connected to the database'))
 .catch(err => console.log(err));
